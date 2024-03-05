@@ -3,16 +3,36 @@
     {
       "id": 5,
       "nombre": "Destornillador",
-      "precio": 4.5,
+      "precio": 50,
       "categoria": 1,
       "inventario": 9
     },
     {
+      "id": 3,
+      "nombre": "Cuaderno",
+      "precio": 8,
+      "categoria": 3,
+      "inventario": 20
+    },
+    {
+      "id": 4,
+      "nombre": "Silla",
+      "precio": 35,
+      "categoria": 2,
+      "inventario": 4
+    },
+    {
       "id": 8,
       "nombre": "Regla",
-      "precio": 5,
+      "precio": 2,
       "categoria": 3,
       "inventario": 50
+    },
+    {
+      "id": 99,
+      "nombre": "ejemplo",
+      "precio": 88.88,
+      "categoria": 1
     }
   ],
   "categorias": [
@@ -27,10 +47,6 @@
     {
       "id": 2,
       "nombre": "Mobiliario"
-    },
-    {
-      "id": 3,
-      "nombre": "Papelería"
     }
   ],
   "usuarios": [

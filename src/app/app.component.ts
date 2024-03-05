@@ -40,6 +40,7 @@ export class AppComponent {
     this.usuarios=[];
   }
 
+  /************** PRODUCTOS **************/
   getProductos() {
     this.appService.getProductos().subscribe({
       next: (data) => {
@@ -50,22 +51,10 @@ export class AppComponent {
       } 
     });
   }
-
-  getCategorias() {
-    this.appService.getCategorias().subscribe((data) =>
-      this.categorias= (data as any));
-  }
-
-  getUsuarios() {
-    this.appService.getUsuarios().subscribe((data) =>
-      this.usuarios= (data as any));
-  }
-  
   getProductosDesde(precio:number) {
     this.appService.getProductosDesde(precio).subscribe((data) =>
       this.productos= (data as any));
   }
-
   crearProducto(){
     let producto:Producto={
       id:99,
@@ -91,7 +80,6 @@ export class AppComponent {
 
       }});
   }
-
   updateProducto(p:Producto, precio:number) {
     let copiaProducto = {...p};
     copiaProducto.precio = precio;
@@ -103,7 +91,6 @@ export class AppComponent {
       }
       });
   }
-
   eliminarProducto(p:Producto) {
     this.appService.deleteProducto(p.id).subscribe(
       {next: (() => {
@@ -116,10 +103,77 @@ export class AppComponent {
       })});
 
   }
-
   quitarDeProductos(p:Producto){
     this.productos=this.productos.filter(x => x.id!=p.id)
   }
+
+
+  /************** CATEGORIAS **************/
+  getCategorias() {
+    this.appService.getCategorias().subscribe((data) =>
+      this.categorias= (data as any));
+  }
+  updateCategoria(c:Categoria, nombre:string) {
+    let copiaCategoria = {...c};
+    copiaCategoria.nombre = nombre;
+    this.appService.updateCategoria(copiaCategoria).subscribe({
+      next: (data) =>
+        c.nombre = nombre,
+      error: error => {
+        this.setAviso('Error: No se ha podido actualizar'); 
+      }
+      });
+  }
+  eliminarCategoria(c:Categoria) {
+    this.appService.deleteCategoria(c.id).subscribe(
+      {next: (() => {
+        //console.log('eliminarCategoria');
+        this.quitarDeCategorias(c);
+        }),
+      error:  ((error:any) => {
+        //console.log('Error eliminar categoria', error);
+        this.setAviso('Error al eliminar categoría.')
+      })});
+  }
+  quitarDeCategorias(c:Categoria){
+    this.categorias=this.categorias.filter(x => x.id!=c.id)
+  }
+
+
+  /************** USUARIOS **************/
+  getUsuarios() {
+    this.appService.getUsuarios().subscribe((data) =>
+      this.usuarios= (data as any));
+  }
+  updateUsuario(u:Usuario, nombre:string) {
+    let copiaUsuario = {...u};
+    copiaUsuario.nombre = nombre;
+    this.appService.updateUsuario(copiaUsuario).subscribe({
+      next: (data) =>
+        u.nombre = nombre,
+      error: error => {
+        this.setAviso('Error: No se ha podido actualizar'); 
+      }
+      });
+  }
+  eliminarUsuario(u:Usuario) {
+    this.appService.deleteUsuario(u.id).subscribe(
+      {next: (() => {
+        //console.log('eliminarUsuario');
+        this.quitarDeUsuarios(u);
+        }),
+      error:  ((error:any) => {
+        //console.log('Error eliminar usuario', error);
+        this.setAviso('Error al eliminar usuario.')
+      })});
+  }
+  quitarDeUsuarios(u:Usuario){
+    this.usuarios=this.usuarios.filter(x => x.id!=u.id)
+  }
+
+
+
+
 
   setAviso(texto:string){
     this.aviso=texto;
