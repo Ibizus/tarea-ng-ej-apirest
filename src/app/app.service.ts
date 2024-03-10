@@ -18,6 +18,7 @@ const PR_DESDEPRECIOURL = "http://localhost:3000/productos?precio_gte="
 const CATEGORIASURL = "http://localhost:3000/categorias";
 /***** USUARIOS *****/
 const USUARIOSURL = "http://localhost:3000/usuarios";
+const USUARIOS_RESULT_URL = "http://localhost:3000/usuarios?resultado_gte=1";
 
 @Injectable({
   providedIn: 'root'
@@ -34,10 +35,10 @@ export class AppService {
   }
   getProductosDesde(precio:number):Observable<Object>{
     let cadena:string = PR_DESDEPRECIOURL + precio.toString();
-  // if(!cadena.includes('.')) {
-  //   cadena+= '.0';
-  // } 
-  console.log(cadena);
+    // if(!cadena.includes('.')) {
+    //   cadena+= '.0';
+    // } 
+    console.log(cadena);
     return this.http.get(cadena);
   }
   deleteProducto(id:number):Observable<unknown> {
@@ -73,6 +74,9 @@ export class AppService {
   /************** USUARIOS **************/
   getUsuarios(){
     return this.http.get(USUARIOSURL);
+  }
+  getUsuariosConResultados():Observable<Object>{
+    return this.http.get(USUARIOS_RESULT_URL);
   }
   deleteUsuario(id:number):Observable<unknown> {
     const url = `${USUARIOSURL}/${id}`
@@ -118,6 +122,6 @@ export interface Categoria {
 export interface Usuario {
   id: number,
   nombre: string,
-  resultado: any[],
+  resultado: number[],
   passwd: string
 }

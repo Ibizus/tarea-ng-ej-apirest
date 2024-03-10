@@ -27,6 +27,11 @@
                 Usuarios
             </button>
         </div>
+        <div class="col">
+            <button (click)="getUsuariosConResultados()">
+                Usuarios con Resultados
+            </button>
+        </div>
     </div>
     <div class="row">
         <div class="col">
@@ -73,17 +78,17 @@
         <div class="col-4">
             <h1>Usuarios</h1>
             <div *ngFor="let u of usuarios" class="mb-5">
-                id:{{u.id}} {{ u.nombre }} -> {{u.resultado}}
+                id:{{u.id}} {{ u.nombre }} -> [{{u.resultado}}]
                 <button class="btn btn-danger mb-1 offset-3"
                 (click)="eliminarUsuario(u)">
                 X
                 </button>
                 <div class="col-12">
                     <button class="col-5 btn btn-primary"
-                    (click)="updateUsuario(u, nombre.value)">
+                    (click)="addResultado(u, miParseInt(resultado.value))">
                     Añadir resultado
                 </button>
-                <input class="col-6" type="text" #nombre>
+                <input class="col-6" type="number" #resultado>
                 </div>
             </div>
         </div>

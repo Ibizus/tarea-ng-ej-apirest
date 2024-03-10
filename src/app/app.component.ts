@@ -51,10 +51,12 @@ export class AppComponent {
       } 
     });
   }
+
   getProductosDesde(precio:number) {
     this.appService.getProductosDesde(precio).subscribe((data) =>
       this.productos= (data as any));
   }
+
   crearProducto(){
     let producto:Producto={
       id:99,
@@ -80,17 +82,22 @@ export class AppComponent {
 
       }});
   }
+
   updateProducto(p:Producto, precio:number) {
-    let copiaProducto = {...p};
-    copiaProducto.precio = precio;
-    this.appService.updateProducto(copiaProducto).subscribe({
-      next: (data) =>
-        p.precio = precio,
-      error: error => {
-        this.setAviso('Error: No se ha podido actualizar'); 
-      }
-      });
+    if(precio>0){
+
+      let copiaProducto = {...p};
+      copiaProducto.precio = precio;
+      this.appService.updateProducto(copiaProducto).subscribe({
+        next: (data) =>
+          p.precio = precio,
+        error: error => {
+          this.setAviso('Error: No se ha podido actualizar'); 
+        }
+        });
+    }
   }
+
   eliminarProducto(p:Producto) {
     this.appService.deleteProducto(p.id).subscribe(
       {next: (() => {
@@ -101,8 +108,8 @@ export class AppComponent {
         //console.log('Error eliminar producto', error);
         this.setAviso('Error al eliminar producto.')
       })});
-
   }
+
   quitarDeProductos(p:Producto){
     this.productos=this.productos.filter(x => x.id!=p.id)
   }
@@ -113,17 +120,21 @@ export class AppComponent {
     this.appService.getCategorias().subscribe((data) =>
       this.categorias= (data as any));
   }
+
   updateCategoria(c:Categoria, nombre:string) {
-    let copiaCategoria = {...c};
-    copiaCategoria.nombre = nombre;
-    this.appService.updateCategoria(copiaCategoria).subscribe({
-      next: (data) =>
-        c.nombre = nombre,
-      error: error => {
-        this.setAviso('Error: No se ha podido actualizar'); 
-      }
-      });
+    if(nombre!=""){
+      let copiaCategoria = {...c};
+      copiaCategoria.nombre = nombre;
+      this.appService.updateCategoria(copiaCategoria).subscribe({
+        next: (data) =>
+          c.nombre = nombre,
+        error: error => {
+          this.setAviso('Error: No se ha podido actualizar'); 
+        }
+        });
+    }
   }
+
   eliminarCategoria(c:Categoria) {
     this.appService.deleteCategoria(c.id).subscribe(
       {next: (() => {
@@ -135,6 +146,7 @@ export class AppComponent {
         this.setAviso('Error al eliminar categoría.')
       })});
   }
+
   quitarDeCategorias(c:Categoria){
     this.categorias=this.categorias.filter(x => x.id!=c.id)
   }
@@ -145,17 +157,29 @@ export class AppComponent {
     this.appService.getUsuarios().subscribe((data) =>
       this.usuarios= (data as any));
   }
-  updateUsuario(u:Usuario, nombre:string) {
-    let copiaUsuario = {...u};
-    copiaUsuario.nombre = nombre;
-    this.appService.updateUsuario(copiaUsuario).subscribe({
-      next: (data) =>
-        u.nombre = nombre,
-      error: error => {
-        this.setAviso('Error: No se ha podido actualizar'); 
-      }
-      });
+
+  getUsuariosConResultados() {
+    this.appService.getUsuariosConResultados().subscribe((data) =>
+      this.usuarios= (data as any));
   }
+
+  addResultado(u:Usuario, resultado:number) {
+    if(resultado>0){
+      let copiaUsuario = {...u};
+      copiaUsuario.resultado.push(resultado);
+      console.log("añadido resultado a copia interna: " + copiaUsuario.resultado);
+      this.appService.updateUsuario(copiaUsuario).subscribe({
+        next: (data) =>{
+          u.resultado.push(resultado);
+          //u.resultado = copiaUsuario.resultado;
+          console.log("añadido resultado a BBDD: " + u.resultado)},
+        error: error => {
+          this.setAviso('Error: No se ha podido añadir el resultado'); 
+        }
+        });
+    }
+  }
+
   eliminarUsuario(u:Usuario) {
     this.appService.deleteUsuario(u.id).subscribe(
       {next: (() => {
@@ -167,6 +191,7 @@ export class AppComponent {
         this.setAviso('Error al eliminar usuario.')
       })});
   }
+
   quitarDeUsuarios(u:Usuario){
     this.usuarios=this.usuarios.filter(x => x.id!=u.id)
   }
@@ -180,6 +205,7 @@ export class AppComponent {
     setTimeout(()=> this.aviso="",2000);
   }
 
+  // Función de parseo para pasar .value(string) a number
   miParseInt(s:string):number{
     return parseInt(s);
   }
